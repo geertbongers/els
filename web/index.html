@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en" ng-app="myApp">
+    <head>
+        <meta charset="utf-8">
+        <title>My AngularJS App</title>
+        <link href="css/bootstrap.css" rel="stylesheet">
+    </head>
+    <body>
+        <div class="container">
+            <div class="navbar">
+                <div class="navbar-inner">
+                    <a href="#" class="brand">Els</a>
+                    <ul class="nav">
+                        <li class="active">
+                            <a href="#">Home</a>
+                        </li>
+                        <li>
+                            <a href="#">Huizen</a>
+                        </li>
+                        <li>
+                            <a href="#">Mensen</a>
+                        </li>
+                    </ul>
+                    <ul class="nav pull-right">
+                        <li class="divider-vertical"></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                Dropdown <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Action</a></li>
+                                <li><a href="#">Another action</a></li>
+                                <li><a href="#">Something else here</a></li>
+                                <li class="divider"></li>
+                                <li><a href="#">Separated link</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <form class="navbar-search pull-right form-search">
+                        <div class="input-append">
+                            <!--<input class="search-query" type="text" placeholder="search">-->
+                            <input type="text" class="span2 search-query">
+                            <a class="btn tbn-small" href="#">
+                                <i class="icon-search"></i>
+                            </a>
+                          </div>
+                    </form>
+                </div>
+            </div>
+            <div>
+                <h1>Dashboard</h1>
+            </div>
+            <ul class="breadcrumb">
+                <li>
+                    <a href="#">Home</a>
+                    <span class="divider">/</span>
+                </li>
+                <li class="active">
+                    Dashboard
+                </li>
+            </ul>
+            <article class="row">
+                <div class="span6">
+                    <h2>Zoeken</h2>
+
+
+                </div>
+                <div class="span3">
+                    <h2>Huizen</h2>
+
+                </div>
+                <div class="span3">
+                    <h2>Mensen</h2>
+                </div>
+            </article>
+            <ul class="menu">
+                <li><a href="#/view1">view1</a></li>
+                <li><a href="#/view2">view2</a></li>
+            </ul>
+
+            <div ng-view></div>
+
+            <div>Angular seed app: v<span app-version></span></div>
+        </div>
+
+        <!-- In production use:
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular.min.js"></script>
+        -->
+        <script src="lib/angular/angular.js"></script>
+        <script src="js/angular-ui.js"></script>
+        <script src="js/bootstrap.js"></script>
+        <script src="js/app.js"></script>
+        <script src="js/services.js"></script>
+        <script src="js/controllers.js"></script>
+        <script src="js/filters.js"></script>
+        <script src="js/directives.js"></script>
+    </body>
+</html>
