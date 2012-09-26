@@ -14,26 +14,30 @@
                         <li class="active">
                             <a href="#">Home</a>
                         </li>
-                        <li>
-                            <a href="#">Huizen</a>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                Huizen <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Toevoegen</a></li>
+                                <li><a href="#">Matches</a></li>
+                            </ul>
                         </li>
-                        <li>
-                            <a href="#">Mensen</a>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                Mensen <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Toevoegen</a></li>
+                            </ul>
                         </li>
                     </ul>
                     <ul class="nav pull-right">
                         <li class="divider-vertical"></li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                Dropdown <b class="caret"></b>
+                        <li>
+                            <a href="#">
+                                Mijn gegevens <i class="icon-cog"></i>
                             </a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something else here</a></li>
-                                <li class="divider"></li>
-                                <li><a href="#">Separated link</a></li>
-                            </ul>
                         </li>
                     </ul>
                     <form class="navbar-search pull-right form-search">
@@ -86,9 +90,10 @@
         <!-- In production use:
         <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular.min.js"></script>
         -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+        <script src="js/bootstrap.js"></script>
         <script src="lib/angular/angular.js"></script>
         <script src="js/angular-ui.js"></script>
-        <script src="js/bootstrap.js"></script>
         <script src="js/app.js"></script>
         <script src="js/services.js"></script>
         <script src="js/controllers.js"></script>
