@@ -39,15 +39,15 @@ class RestEntityController extends BaseController
 
         $queryBuilder
             ->getEntityManager()
-            ->createResultSetPerson()
-            ->mixFilterByOrganisationAndMaskView($organisation, 'ASC', 25)
-            ->getResult()
-            ->getOneOrNullResult();
+            ->createPersonCollection()
+            ->selectAndFilterByOrganisationAndMaskView($organisation, 'ASC', 25)
+            ->getEntity();
 
         $queryBuilder
             ->getEntityManager()
-            ->createPersonQuery()
-            ->getId($id);
+            ->createPersonCollection()
+            ->selectDetailsAndFilterByIdAndMaskView($id)
+            ->getEntity();
 
         $count = $this
             ->getRepository()

@@ -1,5 +1,5 @@
 <?php
-class PersonResult extends \Bongers\ElsBundle\Repository\ResultQueryBuilder
+class PersonResult extends \Bongers\ElsBundle\Repository\EntityCollection
 {
 
     public function selectOrganisationPartOrganisation()
