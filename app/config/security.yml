@@ -41,3 +41,22 @@ security:
     access_control:
         #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
         #- { path: ^/_internal/secure, roles: IS_AUTHENTICATED_ANONYMOUSLY, ip: 127.0.0.1 }
+
+    votes:
+        OWNER: ~
+        MANAGER: ~
+        ORGANISATION: ~
+
+    privileges:
+        USER_CREATE
+        USER_READ
+        USER_UPDATE
+        USER_DELETE
+
+        USER_ALL:
+            USER_CREATE
+            USER_READ
+            USER_UPDATE
+            USER_DELETE
+
+    roles:

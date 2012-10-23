@@ -20,11 +20,11 @@ class BaseRepository extends EntityRepository
     /**
      * @param $queryBuilder
      *
-     * @return EntityCollection
+     * @return QuerySet
      */
     protected function createResultQueryBuilder($queryBuilder)
     {
-        return new EntityCollection($this, $queryBuilder);
+        return new EntityCollectionQuery($this, $queryBuilder);
     }
 
     public function getAllowedQueryBuilder($mask)

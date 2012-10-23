@@ -1,0 +1,107 @@
+ENTITY_CHECK:
+    skip
+    isManager
+    isOwner
+    isInTheSameOrganisation
+    isInOrganisationPart
+    isFinalized
+    isDeleted
+    settingEmployeeEditInterview
+    settingEmployeeInvites
+    settingShowOtherTests
+
+PRIVILEGES:
+    DEBUG
+
+    # Entity privileges
+    SKIP
+    CREATE
+    READ
+    UPDATE
+    DELETE
+
+    CRUD:
+        CREATE
+        READ
+        UPDATE
+        DELETE
+
+    # Competence tests
+    INVITE
+    SHOW_OTHER_TESTS
+
+    # Interview cycle, interview, competence test, competence test group
+    FINALIZE
+
+# Basic setup is: role -> entity privilege -> entity class -> expression -> privilege
+ROLES:
+    ROLE_USER:
+        roles:
+        privileges:
+            DEBUG
+        entityPrivileges:
+            User:
+                isOwner: READ, UPDATE
+                isOrganisation: LIST
+            CompetenceTest:
+                isOwner: READ, UPDATE
+            InterviewCycle:
+                isOwner: LIST, READ
+            Interview:
+                isFinalized and isOwner: READ
+                isOwner and not isFinalized: UPDATE
+                isOwner and settingEmployeeEditInterview and not isFinalized: UPDATE
+            CompetenceTestGroup:
+                isOwner: READ
+                isOwner and isFinalized: SHOW_OTHER_TESTS
+                isOwner and settingEmployeeInvites and not isFinalized: INVITE
+            OrganisationPart:
+                isInOrganisationPart: READ
+
+    ROLE_MANAGER:
+        roles:
+            ROLE_USER
+        privileges:
+        entityPrivileges:
+            CompetenceTestGroup:
+                isManager and settingShowOtherTests and not isFinalized: SHOW_OTHER_TESTS
+                isManager and isFinalized: SHOW_OTHER_TESTS
+                isManager and not settingEmployeeInvites and not isFinalized: INVITE
+            User:
+                isManager and isDeleted: READ
+                isManager and not isDeleted: CRUD
+            InterviewCycle:
+                isManager: CRUD
+                isManager and not isFinalized: FINALIZE
+            Interview:
+                isManager: CRUD
+                isManager and not isFinalized: FINALIZE
+            OrganisationPart:
+                isManager and isDeleted: READ
+                isManager and not isDeleted: CRUD
+
+    ROLE_ORGANISATION_ADMIN:
+        ROLES:
+        PRIVILEGES:
+        ENTITY_PRIVILEGES:
+            - USER:
+                isInTheSameOrganisation and isDeleted: READ
+                isInTheSameOrganisation and not isDeleted: CRUD
+            - ORGANISATINO_PART:
+                isInTheSameOrganisation and isDeleted: READ
+                isInTheSameOrganisation: CRUD
+            - ORGANISATION:
+                isInTheSameOrganisation: CRUD
+
+    ROLE_ADMIN:
+        ROLES:
+        PRIVILEGES:
+        ENTITY_PRIVILEGES:
+            skip: SKIP
+
+    ROLE_DEVELOPER:
+        ROLES:
+            ROLE_ADMIN
+        PRIVILEGES:
+            DEBUG
+        ENTITY_PRIVILEGES:
