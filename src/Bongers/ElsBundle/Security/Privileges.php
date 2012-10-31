@@ -5,12 +5,12 @@ class Privileges
 {
     const DEBUG                     = 'DEBUG';
 
-    const ENTITY_LIST               = 'LIST';
-    const ENTITY_CREATE             = 'CREATE';
-    const ENTITY_READ               = 'READ';
-    const ENTITY_UPDATE             = 'UPDATE';
-    const ENTITY_DELETE             = 'DELETE';
-    const ENTITY_CRUD               = 'CRUD';
+    const OBJECT_LIST               = 'LIST';
+    const OBJECT_CREATE             = 'CREATE';
+    const OBJECT_READ               = 'READ';
+    const OBJECT_UPDATE             = 'UPDATE';
+    const OBJECT_DELETE             = 'DELETE';
+    const OBJECT_CRUD               = 'CRUD';
 
     const ENTITY_INVITE             = 'INVITE';
     const ENTITY_SHOW_OTHER_TESTS   = 'SHOW_OTHER_TESTS';

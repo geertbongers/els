@@ -2,13 +2,14 @@
 namespace Bongers\ElsBundle\Controller;
 
 use FOS\Rest\Util\Codes;
+use Bongers\ElsBundle\Rest\RestResource;
 use Symfony\Component\Security\Acl\Permission\MaskBuilder;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @RouteResource("User")
  */
-class RestEntityController extends BaseController
+abstract class RestEntityController extends BaseController
 {
     /**
      * Read
@@ -72,7 +73,7 @@ class RestEntityController extends BaseController
      * @throws Symfony\Component\Security\Core\Exception\AccessDeniedException
      * @return array
      */
-    public function getAction(Resource $resource)
+    public function getAction(RestResource $resource)
     {
         if (!$this->getSecurityContext()->isGranted(\Privileges::ENTITY_CREATE, $resource)) {
             throw new AccessDeniedException();
@@ -89,7 +90,7 @@ class RestEntityController extends BaseController
      * @throws Symfony\Component\Security\Core\Exception\AccessDeniedException
      * @return array
      */
-    public function postAction(Resource $resource)
+    public function postAction(RestResource $resource)
     {
         if (!$this->getSecurityContext()->isGranted(\Privileges::ENTITY_CREATE, $resource)) {
             throw new AccessDeniedException();
@@ -116,7 +117,7 @@ class RestEntityController extends BaseController
      * @throws Symfony\Component\Security\Core\Exception\AccessDeniedException
      * @return array
      */
-    public function putAction(Resource $resource)
+    public function putAction(RestResource $resource)
     {
         if (!$this->getSecurityContext()->isGranted(\Privileges::ENTITY_UPDATE, $resource)) {
             throw new AccessDeniedException();
@@ -172,7 +173,7 @@ class RestEntityController extends BaseController
      * @throws Exception
      * @return array
      */
-    public function deleteAction(Resource $resource)
+    public function deleteAction(RestResource $resource)
     {
         if (!$this->getSecurityContext()->isGranted(\Privileges::ENTITY_DELETE, $resource)) {
             throw new AccessDeniedException();
@@ -208,5 +209,9 @@ class RestEntityController extends BaseController
     public function optionAction()
     {
 
+    }
+
+    public function getRestResource()
+    {
     }
 }

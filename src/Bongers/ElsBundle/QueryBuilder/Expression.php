@@ -19,7 +19,7 @@ class Expression
 }
 
 
-class PersonExpression extends  Expression
+class PersonExpressionManager extends  Expression
 {
     /**
      * @return PersonQuery
@@ -39,7 +39,7 @@ class PersonExpression extends  Expression
 }
 
 
-class OrganisationExpression extends  Expression
+class OrganisationExpressionManager extends  Expression
 {
     /**
      * @return OrganisationQuery

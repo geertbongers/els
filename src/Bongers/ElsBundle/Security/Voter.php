@@ -5,6 +5,11 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 class Voter implements \Symfony\Component\Security\Core\Authorization\Voter\VoterInterface
 {
     /**
+     * @var \Bongers\ElsBundle\Security\AclProvider
+     */
+    protected $aclProvider;
+
+    /**
      * Checks if the voter supports the given attribute.
      *
      * @param string $attribute An attribute
@@ -13,7 +18,7 @@ class Voter implements \Symfony\Component\Security\Core\Authorization\Voter\Vote
      */
     public function supportsAttribute($attribute)
     {
-        // TODO: Implement supportsAttribute() method.
+        return true;
     }
 
     /**
@@ -25,7 +30,7 @@ class Voter implements \Symfony\Component\Security\Core\Authorization\Voter\Vote
      */
     public function supportsClass($class)
     {
-        // TODO: Implement supportsClass() method.
+        return true;
     }
 
     /**
@@ -42,33 +47,12 @@ class Voter implements \Symfony\Component\Security\Core\Authorization\Voter\Vote
      */
     public function vote(TokenInterface $token, $object, array $attributes)
     {
-        $permissions = $this->getPermissions($token, $object);
-
         foreach ($attributes as $attribute) {
-            if (in_array($attribute, $permissions)) {
+            if ($this->aclProvider->hasPrivilege($token, $object, $attribute)) {
                 return VoterInterface::ACCESS_GRANTED;
             }
         }
 
         return VoterInterface::ACCESS_DENIED;
-    }
-
-    public function getPermissions($token, $object)
-    {
-        $name = get_class($object);
-        $permissions = array();
-
-        foreach ($token->getReachableRoles() as $role) {
-            $permissions = array_merge($permissions, $permissions[$role]['PRIVILEGES']);
-            foreach ($permissions[$role]['entityPrivileges'][$this->getName($object)] as $expression => $permissions) {
-                $expression = $this->getChecker($expression);
-
-                if ($expression->check($token, $object)) {
-                    $permissions = array_merge($permissions, $permissions);
-                }
-            }
-        }
-
-        return $permissions;
     }
 }
