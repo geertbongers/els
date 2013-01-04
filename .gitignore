@@ -4,4 +4,6 @@ app/cache/*
 app/logs/*
 build/
 vendor
+.idea
+.idea/*
 composer.phar
