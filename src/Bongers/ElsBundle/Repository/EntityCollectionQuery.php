@@ -1,7 +1,7 @@
 <?php
 namespace Bongers\ElsBundle\Repository;
 
-class EntityCollection
+class EntityCollectionQuery
 {
     protected $repository;
 
@@ -21,17 +21,17 @@ class EntityCollection
 
     }
 
-    public function applyLimitAndOffset($limit, $offset = 0)
+    public function setLimitAndOffset($limit, $offset = 0)
     {
 
     }
 
-    public function getEntities()
+    public function getAll()
     {
 
     }
 
-    public function getEntity()
+    public function getOne()
     {
 
     }
@@ -67,6 +67,26 @@ class EntityCollection
     }
 
     public function selectDetailsAndFilterById($id)
+    {
+
+    }
+
+    public function resetFilter()
+    {
+
+    }
+
+    public function resetSelect()
+    {
+
+    }
+
+    public function countWithoutLimit()
+    {
+
+    }
+
+    public function count()
     {
 
     }

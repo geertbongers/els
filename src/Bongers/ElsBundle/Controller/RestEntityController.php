@@ -1,14 +1,16 @@
 <?php
-use FOS\RestBundle\Controller\Annotations\View;
+namespace Bongers\ElsBundle\Controller;
+
+use FOS\Rest\Util\Codes;
+use Bongers\ElsBundle\Rest\RestResource;
 use Symfony\Component\Security\Acl\Permission\MaskBuilder;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @RouteResource("User")
  */
-class RestEntityController extends BaseController
+abstract class RestEntityController extends BaseController
 {
-
     /**
      * Read
      *
@@ -19,6 +21,11 @@ class RestEntityController extends BaseController
      */
     public function cgetAction($limit = 25, $offset = 0)
     {
+        $resource = $this->getResource();
+        if (!$this->getSecurityContext()->isGranted(\Privileges::ENTITY_LIST, $resource)) {
+            throw new AccessDeniedException();
+        }
+
         // Always use @View and groups with group collection, and query params
         // In routing only display routing specific parameters, rest are query ones, if validation
         // is needed add @QueryParam Validation also determined on type
@@ -39,14 +46,15 @@ class RestEntityController extends BaseController
 
         $queryBuilder
             ->getEntityManager()
-            ->createPersonCollection()
-            ->selectAndFilterByOrganisationAndMaskView($organisation, 'ASC', 25)
-            ->getEntity();
+            ->createPersonCollectionQuery()
+            ->filterByOrganisationAndMaskView($organisation, 'ASC', 25)
+            ->getEntities();
 
         $queryBuilder
             ->getEntityManager()
-            ->createPersonCollection()
-            ->selectDetailsAndFilterByIdAndMaskView($id)
+            ->createPersonCollectionQuery()
+            ->select()
+            ->filterByIdAndMaskView($id)
             ->getEntity();
 
         $count = $this
@@ -54,56 +62,70 @@ class RestEntityController extends BaseController
             ->findAllBy($mask)
             ->count();
 
-        $test = new \Doctrine\ORM\QueryBuilder('');
-        $test->getQuery()->getResult();
-//        $test->getResult();
-
         return array('entities' => $entities, 'count' => $count);
     }
 
     /**
      * Read
      *
-     * @param $resource
+     * @param Resource $resource
      *
+     * @throws Symfony\Component\Security\Core\Exception\AccessDeniedException
      * @return array
      */
-    public function getAction(Resource $resource)
+    public function getAction(RestResource $resource)
     {
-        if (!$this->getSecurityContext()->isGranted(MaskBuilder::MASK_VIEW, $resource)) {
+        if (!$this->getSecurityContext()->isGranted(\Privileges::ENTITY_CREATE, $resource)) {
             throw new AccessDeniedException();
         }
+
         return array('entity' => $resource);
     }
 
     /**
      * Create new
      *
-     * @param $resource
+     * @param Resource $resource
      *
+     * @throws Symfony\Component\Security\Core\Exception\AccessDeniedException
      * @return array
      */
-    public function postAction(Resource $resource)
+    public function postAction(RestResource $resource)
     {
-        if (!$this->getSecurityContext()->isGranted(MaskBuilder::MASK_CREATE, $resource)) {
+        if (!$this->getSecurityContext()->isGranted(\Privileges::ENTITY_CREATE, $resource)) {
             throw new AccessDeniedException();
         }
-        return $this->_processForm($resource);
+
+        if ($this->getSecurityContext()->isGranted(\Privileges::INVITE, $resource)) {
+            $showInviteLink = '';
+        }
+
+        $return = $this->_processForm($resource);
+
+        if ($this->getEntityManager()->isInserted($resource)) {
+            $this->setStatusCode(Codes::HTTP_CREATED);
+        }
+
+        return $return;
     }
 
     /**
-     * Edit
+     * Edit/update
      *
-     * @param $resource
+     * @param Resource $resource
+     *
+     * @throws Symfony\Component\Security\Core\Exception\AccessDeniedException
      * @return array
      */
-    public function putAction(Resource $resource)
+    public function putAction(RestResource $resource)
     {
-        if (!$this->getSecurityContext()->isGranted(MaskBuilder::MASK_EDIT, $resource)) {
+        if (!$this->getSecurityContext()->isGranted(\Privileges::ENTITY_UPDATE, $resource)) {
             throw new AccessDeniedException();
         }
 
-        return $this->_processForm($resource);
+        $return = $this->_processForm($resource);
+
+        return $return;
     }
 
     /**
@@ -139,7 +161,7 @@ class RestEntityController extends BaseController
             $message = $this->getFormErrors($form);
         }
 
-        return $this->view(array('message' => $message, 'status' => $success));
+        return array('message' => $message, 'status' => $success);
     }
 
     /**
@@ -147,12 +169,13 @@ class RestEntityController extends BaseController
      *
      * @param Resource $resource
      *
+     * @throws Symfony\Component\Security\Core\Exception\AccessDeniedException
      * @throws Exception
      * @return array
      */
-    public function deleteAction(Resource $resource)
+    public function deleteAction(RestResource $resource)
     {
-        if (!$this->getSecurityContext()->isGranted(MaskBuilder::MASK_DELETE, $resource)) {
+        if (!$this->getSecurityContext()->isGranted(\Privileges::ENTITY_DELETE, $resource)) {
             throw new AccessDeniedException();
         }
 
@@ -186,5 +209,9 @@ class RestEntityController extends BaseController
     public function optionAction()
     {
 
+    }
+
+    public function getRestResource()
+    {
     }
 }

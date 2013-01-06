@@ -1,0 +1,106 @@
+CHECK:
+    RESOURCE:
+        skip
+        isManager
+        isOwner
+        isInTheSameOrganisation
+        isInOrganisationPart
+        isFinalized
+        isDeleted
+        settingEmployeeEditInterview
+        settingEmployeeInvites
+        settingShowOtherTests
+
+PRIVILEGES:
+    DEBUG
+
+RESOURCE_PRIVILEGES:
+    ALL:
+        SKIP
+        CREATE
+        READ
+        UPDATE
+        DELETE
+        CRUD:
+            CREATE
+            READ
+            UPDATE
+            DELETE
+
+    CompetenceTestGroup:
+        INVITE
+        SHOW_OTHER_TESTS
+
+    InterviewCycle:
+        FINALIZE
+    Interview:
+        FINALIZE
+    CompetenceTest:
+        FINALIZE
+    CompetenceTestGroup:
+        FINALIZE
+
+# Basic setup is: role -> object privilege -> object class -> expression -> privilege
+role_privileges:
+    ROLE_USER:
+        no_resource:
+            DEBUG
+        resource:
+            Test:
+                noVerification: [READ, UPDATE]
+            User:
+                isOwner: [READ, UPDATE]
+                isOrganisation: [LIST]
+            CompetenceTest:
+                isOwner: [READ, UPDATE]
+            InterviewCycle:
+                isOwner: [LIST, READ]
+            Interview:
+                isFinalized and isOwner: [READ]
+                isOwner and not isFinalized: [UPDATE]
+                isOwner and settingEmployeeEditInterview and not isFinalized: [UPDATE]
+            CompetenceTestGroup:
+                isOwner: [READ]
+                isOwner and isFinalized: [SHOW_OTHER_TESTS]
+                isOwner and settingEmployeeInvites and not isFinalized: [INVITE]
+            OrganisationPart:
+                isInOrganisationPart: READ]
+
+    ROLE_MANAGER:
+        CompetenceTestGroup:
+            isManager and settingShowOtherTests and not isFinalized: SHOW_OTHER_TESTS
+            isManager and isFinalized: SHOW_OTHER_TESTS
+            isManager and not settingEmployeeInvites and not isFinalized: INVITE
+        User:
+            isManager and isDeleted: READ
+            isManager and not isDeleted: CRUD
+        InterviewCycle:
+            isManager: CRUD
+            isManager and not isFinalized: FINALIZE
+        Interview:
+            isManager: CRUD
+            isManager and not isFinalized: FINALIZE
+        OrganisationPart:
+            isManager and isDeleted: READ
+            isManager and not isDeleted: CRUD
+
+    ROLE_ORGANISATION_ADMIN:
+        privileges:
+            - User:
+                isInTheSameOrganisation and isDeleted: READ
+                isInTheSameOrganisation and not isDeleted: CRUD
+            - OrganisationPart:
+                isInTheSameOrganisation and isDeleted: READ
+                isInTheSameOrganisation: CRUD
+            - Organisation:
+                isInTheSameOrganisation: CRUD
+
+    ROLE_ADMIN:
+        privileges:
+        resourcePrivileges:
+            skip: SKIP
+
+    ROLE_DEVELOPER:
+        privileges:
+            DEBUG
+        resourcePrivileges:

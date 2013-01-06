@@ -1,0 +1,7 @@
+Bongers\ElsBundle\Entity\User:
+    exclusion_policy: all
+    fields:
+        id:
+            groups: list, details
+        username:
+            expose: true
