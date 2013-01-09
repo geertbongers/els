@@ -1,0 +1,67 @@
+<div>
+    <h1>Dashboard</h1>
+</div>
+<ul class="breadcrumb">
+    <li>
+        <a href="#">Home</a>
+        <span class="divider">/</span>
+    </li>
+    <li class="active">
+        Dashboard
+    </li>
+</ul>
+<article class="row">
+    <div class="span6">
+        <h2>Berichten ({{ messages.length }})</h2>
+        <table class="table table-condensed">
+            <tr>
+                <th>Bericht</th>
+                <th class="align-right">Datum</th>
+            </tr>
+            <tr ng-repeat="message in messages">
+                <td>
+                    <span class="label label-{{ message.type }}"><i class="icon-search icon-white"></i></span>
+                    {{ message.title }}
+                </td>
+                <td class="align-right">{{ message.time }}</td>
+            </tr>
+        </table>
+
+        <form class="form-inline" name="form">
+            <div class="control-group" ng-class="{error: form.messageTitle.$invalid}">
+                <input type="text"
+                       name="messageTitle"
+                       ng-model="messageTitle"
+                       required="required"
+                       placeholder="Vul bericht in...">
+                <span ng-show="form.messageTitle.$error.required"
+                      class="help-inline">
+                    Required
+                </span>
+
+                <div class="btn-group">
+                    <button class="btn dropdown-toggle" data-toggle="dropdown"
+                            ng-disabled="form.$invalid">
+                        Type <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a ng-click="addMessage('Verhuur')">Verhuurd</a>
+                        </li>
+                        <li><a ng-click="addMessage('Toegevoegd')">Toegevoegd</a>
+                        </li>
+                        <li><a ng-click="addMessage('Gevonden')">Gevonden</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </form>
+
+    </div>
+    <div class="span3">
+        <h2>Huizen</h2>
+
+    </div>
+    <div class="span3">
+        <h2>Mensen</h2>
+    </div>
+</article>
